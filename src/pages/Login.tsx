@@ -4,15 +4,16 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 
 export const Login = () => {
-	const [email, setEmail] = useState("test@test.com");
+	const [mail, setEmail] = useState("test@test.com");
 	const [password, setPassword] = useState("password1234");
 	const { login: setUser } = useAuth();
 	const navigate = useNavigate();
 
 	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const userData = await loginApi(email, password);
-		setUser(userData.name);
+		const userData = await loginApi(mail, password);
+		const {id, name, email} = userData.user
+		setUser({id, name, email});
 		navigate("/top");
 	};
 
@@ -44,7 +45,7 @@ export const Login = () => {
 								name="email"
 								className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 								required
-								value={email}
+								value={mail}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</div>

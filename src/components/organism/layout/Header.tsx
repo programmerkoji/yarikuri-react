@@ -1,11 +1,21 @@
+import { logoutApi } from "@/api/authApi";
 import { NAV_LINKS } from "@/constants/navLinks";
+import { useAuth } from "@/hooks/useAuth";
 import { getNavLinkClass, getSpNavLinkClass } from "@/utils/classUtils";
-import { FC, memo, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { FC, FormEvent, memo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 
 export const Header: FC = memo(() => {
 	const [isOpen, setIsOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user } = useAuth();
 	const location = useLocation();
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+    await logoutApi();
+		navigate("login");
+	};
 
 	return (
 		<header className="bg-white border-b border-gray-100">
@@ -19,9 +29,11 @@ export const Header: FC = memo(() => {
 								</Link>
 							</div>
 							{NAV_LINKS.map(({ path, label }) => (
-								<div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+								<div
+									key={path}
+									className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+								>
 									<Link
-										key={path}
 										to={path}
 										className={getNavLinkClass(location.pathname, path)}
 									>
@@ -62,16 +74,54 @@ export const Header: FC = memo(() => {
 							</svg>
 						</button>
 					</div>
+					<div className="hidden sm:flex sm:items-center sm:ml-6">
+						<div className="relative">
+							<div>
+								<button
+									className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+									onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+								>
+									<div>テストユーザー</div>
+									<div className="ml-1">
+										<svg
+											className="fill-current h-4 w-4"
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 20 20"
+										>
+											<path
+												fillRule="evenodd"
+												d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+												clipRule="evenodd"
+											></path>
+										</svg>
+									</div>
+								</button>
+							</div>
+							<div
+								className={`absolute z-50 mt-2 w-48 rounded-md shadow-lg origin-top-right right-0 ${
+									isUserMenuOpen || "hidden"
+								}`}
+							>
+								<div className="rounded-md ring-black ring-opacity-5 py-1 bg-white">
+									<div
+										className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+										onClick={handleLogout}
+									>
+										ログアウト
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div className={isOpen ? "sm:hidden block" : "sm:hidden hidden"}>
 				{NAV_LINKS.map(({ path, label }) => (
-					<div className="pt-2 pb-3 space-y-1">
+					<div key={path} className="pt-2 pb-3 space-y-1">
 						<Link
-							key={path}
 							to={path}
 							className={getSpNavLinkClass(location.pathname, path)}
-              onClick={() => setIsOpen(!isOpen)}
+							onClick={() => setIsOpen(!isOpen)}
 						>
 							{label}
 						</Link>

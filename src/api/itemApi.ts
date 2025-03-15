@@ -1,13 +1,35 @@
 import axios from "axios";
-import { ItemResponseApi } from "../types/item";
+import { Item, ItemResponseApi } from "../types/item";
 
-const API_BASE_URL = 'http://localhost';
+const API_BASE_URL = "http://localhost";
+
+export const fetchItemsApi = async (): Promise<ItemResponseApi> => {
+	let url = `${API_BASE_URL}/api/items`;
+	const response = await axios.get<ItemResponseApi>(url, {
+		withCredentials: true,
+		withXSRFToken: true,
+	});
+	return response.data;
+};
 
 export const fetchItemApi = async (): Promise<ItemResponseApi> => {
-		let url = `${API_BASE_URL}/api/items`;
-		const response = await axios.get<ItemResponseApi>(url, {
-			withCredentials: true,
-			withXSRFToken: true,
-		});
-		return response.data;
+	let url = `${API_BASE_URL}/api/items`;
+	const response = await axios.get<ItemResponseApi>(url, {
+		withCredentials: true,
+		withXSRFToken: true,
+	});
+	return response.data;
+};
+
+export const storeItemApi = async (data: Item) => {
+	try {
+		const response = await axios.post<Item>(
+			`${API_BASE_URL}/api/items`,
+			{ ...data },
+			{ withCredentials: true, withXSRFToken: true }
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
 };

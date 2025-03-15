@@ -2,13 +2,13 @@ import { logoutApi } from "@/api/authApi";
 import { NAV_LINKS } from "@/constants/navLinks";
 import { useAuth } from "@/hooks/useAuth";
 import { getNavLinkClass, getSpNavLinkClass } from "@/utils/classUtils";
-import { FC, FormEvent, memo, useState } from "react";
+import { FC, memo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 export const Header: FC = memo(() => {
 	const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { user } = useAuth();
+	const { user } = useAuth();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -81,7 +81,7 @@ export const Header: FC = memo(() => {
 									className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
 									onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
 								>
-									<div>テストユーザー</div>
+									<div>{ user?.name }</div>
 									<div className="ml-1">
 										<svg
 											className="fill-current h-4 w-4"
@@ -130,10 +130,10 @@ export const Header: FC = memo(() => {
 				<div className="pt-4 pb-1 border-t border-gray-200">
 					<div className="px-4">
 						<div className="font-medium text-base text-gray-800">
-							テストユーザー
+							{user?.name}
 						</div>
 						<div className="font-medium text-sm text-gray-500">
-							test@test.com
+							{user?.email}
 						</div>
 					</div>
 
@@ -147,12 +147,12 @@ export const Header: FC = memo(() => {
 								name="_token"
 								value="cGgDxa4dPTpIkOBTkgIlrg1i5r2j1zrHnXzeTKtW"
 							/>
-							<a
+							<div
 								className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out"
-								href="https://from-forties.net/yarikuri/logout"
+								onClick={handleLogout}
 							>
 								ログアウト
-							</a>
+							</div>
 						</form>
 					</div>
 				</div>

@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { AuthProvider } from "./context/AuthContext";
 import { Router } from "./router/Router";
 
@@ -6,6 +7,7 @@ const App: React.FC = () => {
 		<>
 			<AuthProvider>
 				<Router></Router>
+				<Toaster />
 			</AuthProvider>
 		</>
 	);

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { ItemResponseApi } from "../types/item";
-import { fetchItemApi } from "../api/itemApi";
+import { fetchItemsApi } from "../api/itemApi";
 
 export const useItems = () => {
 	const [items, setItems] = useState<ItemResponseApi>();
 
 	useEffect(() => {
 		const fetchItems = async () => {
-			const data = await fetchItemApi();
+			const data = await fetchItemsApi();
 			setItems(data);
 		};
 		fetchItems();

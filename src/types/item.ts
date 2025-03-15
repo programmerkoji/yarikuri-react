@@ -1,7 +1,7 @@
 export type Item = {
-  id: number;
+  id: number | null;
   name: string;
-  price: number;
+  price: number | null;
 }
 
 export type ItemResponseApi = {

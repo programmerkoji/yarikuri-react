@@ -1,20 +1,27 @@
-import { useItems } from "../hooks/useItems";
+import { Link, useLocation } from "react-router";
+import { useItems } from "../../hooks/useItems";
+import { useEffect } from "react";
+import { toast } from "sonner"
 
 export const Item: React.FC = () => {
+	const location = useLocation();
 	const { items } = useItems();
 	const itemDatas = items?.items.data;
+
+	useEffect(() => {
+		if (location.state?.message) {
+			toast.success(location.state.message)
+		}
+	}, [location, toast])
 	return (
 		<div className="py-12">
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 					<div className="p-4 text-gray-900">
 						<div className="py-4 flex justify-between items-center">
-							<a
-								href="{{route('items.create')}}"
-								className="inline-flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded"
-							>
+							<Link to={'create'} className="inline-flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded">
 								項目追加
-							</a>
+							</Link>
 							<dl className="flex gap-2 justify-end">
 								<dt>合計金額</dt>
 								<dd>{items?.calculateTotalAmounts}円</dd>
@@ -40,15 +47,20 @@ export const Item: React.FC = () => {
 								</thead>
 								<tbody>
 									{itemDatas?.map(({ id, name, price }) => (
-										<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"key={id}>
+										<tr
+											className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+											key={id}
+										>
 											<td className="px-6 py-4">
-												<div className="flex items-center">{ id }</div>
+												<div className="flex items-center">{id}</div>
 											</td>
 											<td className="px-6 py-4">
-												<div className="flex items-center">{ name }</div>
+												<div className="flex items-center">{name}</div>
 											</td>
 											<td className="px-6 py-4">
-												<div className="flex items-center justify-end">{ price }</div>
+												<div className="flex items-center justify-end">
+													{price}
+												</div>
 											</td>
 											<td className="px-6 py-4">
 												<div className="flex items-center justify-center gap-2">

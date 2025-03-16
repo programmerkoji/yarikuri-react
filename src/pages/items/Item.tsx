@@ -1,25 +1,46 @@
 import { Link, useLocation } from "react-router";
 import { useItems } from "../../hooks/useItems";
 import { useEffect } from "react";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { deleteItemApi, fetchItemsApi } from "@/api/itemApi";
 
 export const Item: React.FC = () => {
 	const location = useLocation();
-	const { items } = useItems();
+	const { items, fetchItems } = useItems();
 	const itemDatas = items?.items.data;
+
+	const handleDelete = async (
+		e: React.MouseEvent<HTMLButtonElement>,
+		id: number | null
+	) => {
+		e.preventDefault();
+		const confirmed = window.confirm("本当に削除しますか？");
+		if (!confirmed) return;
+
+		try {
+			const response = await deleteItemApi(id);
+			await fetchItems();
+			toast.info(response?.data.message);
+		} catch (error) {
+			console.error("削除エラー：", error);
+		}
+	};
 
 	useEffect(() => {
 		if (location.state?.message) {
-			toast.success(location.state.message)
+			toast.success(location.state.message);
 		}
-	}, [location, toast])
+	}, [location, toast]);
 	return (
 		<div className="py-12">
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 					<div className="p-4 text-gray-900">
 						<div className="py-4 flex justify-between items-center">
-							<Link to={'create'} className="inline-flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded">
+							<Link
+								to={"create"}
+								className="inline-flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded"
+							>
 								項目追加
 							</Link>
 							<dl className="flex gap-2 justify-end">
@@ -75,12 +96,12 @@ export const Item: React.FC = () => {
 														action="{{route('items.destroy', ['item' => $item->id])}}"
 														method="post"
 													>
-														<a
-															href="#"
+														<button
+															onClick={(e) => handleDelete(e, id)}
 															className="inline-flex text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded"
 														>
 															削除
-														</a>
+														</button>
 													</form>
 												</div>
 											</td>

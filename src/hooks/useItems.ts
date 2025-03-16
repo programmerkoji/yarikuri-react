@@ -5,12 +5,13 @@ import { fetchItemsApi } from "../api/itemApi";
 export const useItems = () => {
 	const [items, setItems] = useState<ItemResponseApi>();
 
+	const fetchItems = async () => {
+		const data = await fetchItemsApi();
+		setItems(data);
+	};
+
 	useEffect(() => {
-		const fetchItems = async () => {
-			const data = await fetchItemsApi();
-			setItems(data);
-		};
 		fetchItems();
 	}, []);
-	return { items };
+	return { items, fetchItems };
 };

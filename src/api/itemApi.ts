@@ -33,3 +33,15 @@ export const storeItemApi = async (data: Item) => {
 		console.log(error);
 	}
 };
+
+export const deleteItemApi = async (id: number | null) => {
+	try {
+		const response = await axios.delete(`${API_BASE_URL}/api/items/${id}`, {
+			withCredentials: true,
+			withXSRFToken: true,
+		});
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

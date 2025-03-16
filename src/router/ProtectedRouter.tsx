@@ -1,12 +1,26 @@
+import { fetchUser } from "@/api/authApi";
 import { useAuth } from "@/hooks/useAuth";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router";
 
 type Props = {
-  children: ReactNode
-}
+	children: ReactNode;
+};
 
-export const ProtectedRouter: FC<Props> = ({children}) => {
-  const { user } = useAuth();
-  return user ? <>{ children }</> : <Navigate to="/login" replace />;
+export const ProtectedRouter: FC<Props> = ({ children }) => {
+	const { user } = useAuth();
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const checkUser = async () => {
+			setLoading(true);
+			await fetchUser();
+			setLoading(false);
+		};
+		checkUser();
+	}, []);
+
+	if (loading) return <div>loading...</div>;
+
+	return user ? <>{children}</> : <Navigate to="/login" replace />;
 };

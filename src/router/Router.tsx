@@ -13,11 +13,11 @@ export const Router: FC = memo(() => {
 			<Route path="/login" element={<Login />} />
 			<Route
 				element={
-					<ProtectedRouter>
+					//<ProtectedRouter>
 						<HeaderLayout>
 							<Outlet />
 						</HeaderLayout>
-					</ProtectedRouter>
+					//</ProtectedRouter>
 				}
 			>
 				<Route path="/top" element={<Top />} />

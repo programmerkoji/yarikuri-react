@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { loginApi } from "../api/authApi";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
+import { toast } from "sonner";
 
 export const Login = () => {
 	const [mail, setEmail] = useState("test@test.com");
@@ -11,10 +12,20 @@ export const Login = () => {
 
 	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const userData = await loginApi(mail, password);
-		const {id, name, email} = userData.user
-		setUser({id, name, email});
-		navigate("/top");
+		try {
+			const userData = await loginApi(mail, password);
+			const { id, name, email } = userData.user;
+			setUser({ id, name, email });
+			navigate("/top");
+		} catch (error: any) {
+			console.log(error.response);
+			if (error.response) {
+				if (error.response.status === 403) {
+					toast(error.response.data.message);
+					navigate("/top");
+				}
+			}
+		}
 	};
 
 	return (

@@ -2,11 +2,12 @@ import { Link, useLocation } from "react-router";
 import { useItems } from "../../hooks/useItems";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { deleteItemApi, fetchItemsApi } from "@/api/itemApi";
+import { deleteItemApi } from "@/api/itemApi";
+import { Loading } from "@/components/atoms/Loading";
 
 export const Item: React.FC = () => {
 	const location = useLocation();
-	const { items, fetchItems } = useItems();
+	const { items, fetchItems, loading } = useItems();
 	const itemDatas = items?.items.data;
 
 	const handleDelete = async (
@@ -31,7 +32,8 @@ export const Item: React.FC = () => {
 			toast.success(location.state.message);
 		}
 	}, [location, toast]);
-	return (
+
+	return loading ? <Loading /> :
 		<div className="py-12">
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -85,17 +87,10 @@ export const Item: React.FC = () => {
 											</td>
 											<td className="px-6 py-4">
 												<div className="flex items-center justify-center gap-2">
-													<a
-														href="{{route('items.edit', ['item' => $item->id])}}"
-														className="inline-flex text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded"
-													>
+													<Link to={ `edit/${id}` } className="inline-flex text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded">
 														編集
-													</a>
-													<form
-														id="delete_{{$item->id}}"
-														action="{{route('items.destroy', ['item' => $item->id])}}"
-														method="post"
-													>
+													</Link>
+													<form>
 														<button
 															onClick={(e) => handleDelete(e, id)}
 															className="inline-flex text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded"
@@ -115,5 +110,5 @@ export const Item: React.FC = () => {
 				</div>
 			</div>
 		</div>
-	);
+	;
 };

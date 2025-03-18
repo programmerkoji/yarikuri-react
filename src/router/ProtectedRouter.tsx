@@ -1,6 +1,6 @@
-import { fetchUser } from "@/api/authApi";
+import { Loading } from "@/components/atoms/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode } from "react";
 import { Navigate } from "react-router";
 
 type Props = {
@@ -8,19 +8,13 @@ type Props = {
 };
 
 export const ProtectedRouter: FC<Props> = ({ children }) => {
-	const { user } = useAuth();
-	const [loading, setLoading] = useState(false);
+	const { user, loading } = useAuth();
 
-	useEffect(() => {
-		const checkUser = async () => {
-			setLoading(true);
-			await fetchUser();
-			setLoading(false);
-		};
-		checkUser();
-	}, []);
-
-	if (loading) return <div>loading...</div>;
+	if (loading) {
+		return (
+			<Loading />
+		);
+	}
 
 	return user ? <>{children}</> : <Navigate to="/login" replace />;
 };

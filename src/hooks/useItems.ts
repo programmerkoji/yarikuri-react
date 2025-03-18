@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
-import { ItemResponseApi } from "../types/item";
+import { ItemsResponseApi } from "../types/item";
 import { fetchItemsApi } from "../api/itemApi";
 
 export const useItems = () => {
-	const [items, setItems] = useState<ItemResponseApi>();
+	const [items, setItems] = useState<ItemsResponseApi>();
+	const [loading, setLoading] = useState(true);
 
 	const fetchItems = async () => {
-		const data = await fetchItemsApi();
-		setItems(data);
+		setLoading(true);
+		try {
+			const data = await fetchItemsApi();
+			setItems(data);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	useEffect(() => {
 		fetchItems();
 	}, []);
-	return { items, fetchItems };
+
+	return { items, fetchItems, loading };
 };

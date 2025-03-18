@@ -1,4 +1,4 @@
-import { Header } from "@/components/organism/layout/Header";
+import { Header } from "@/components/organisms/layout/Header";
 import { FC, ReactNode, memo } from "react";
 
 type Props = {

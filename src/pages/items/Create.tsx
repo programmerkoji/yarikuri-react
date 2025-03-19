@@ -1,9 +1,12 @@
 import { storeItemApi } from "@/api/itemApi";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export const Create = () => {
 	const [formData, setFormData] = useState({ id: null, name: "", price: null });
+	const [errors, setErrors] = useState<Record<string, string[]>>({});
+	const [generalError, setGeneralError] = useState<string | null>(null);
 	const navigate = useNavigate();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,17 +16,36 @@ export const Create = () => {
 			[name]: value,
 		}));
 	};
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const response = await storeItemApi(formData);
-		if (response) {
-      navigate("/item", { state: response.data});
+		setErrors({});
+		setGeneralError(null);
+
+		if (!formData) {
+			toast.error("Invalid item data.");
+			return;
+		}
+
+		try {
+			const response = await storeItemApi(formData);
+			if (response) {
+				navigate("/item", { state: response.data });
+			}
+		} catch (error) {
+			if (typeof error === "object" && error !== null) {
+				setErrors(error as Record<string, string[]>);
+			} else if (error instanceof Error) {
+				setGeneralError(error.message);
+			}
 		}
 	};
+
 	return (
 		<main>
 			<div className="py-12">
 				<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+					{generalError && <p>{generalError}</p>}
 					<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 						<div className="p-4 text-gray-900">
 							<div className="p-4 text-gray-900">
@@ -43,6 +65,15 @@ export const Create = () => {
 												className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
 												onChange={handleChange}
 											/>
+											{errors.name &&
+												errors.name.map((msg, index) => (
+													<span
+														key={index}
+														className="block text-rose-700 mt-2"
+													>
+														{msg}
+													</span>
+												))}
 										</div>
 										<div className="w-full">
 											<label className="leading-7 text-sm text-gray-600">
@@ -55,6 +86,15 @@ export const Create = () => {
 												className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
 												onChange={handleChange}
 											/>
+											{errors.price &&
+												errors.price.map((msg, index) => (
+													<span
+														key={index}
+														className="block text-rose-700 mt-2"
+													>
+														{msg}
+													</span>
+												))}
 										</div>
 									</div>
 									<div className="flex gap-2 items-center flex-wrap">

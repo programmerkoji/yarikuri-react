@@ -3,8 +3,8 @@ import { Item, ItemResponseApi, ItemsResponseApi } from "../types/item";
 
 const API_BASE_URL = "http://localhost";
 
-export const fetchItemsApi = async (): Promise<ItemsResponseApi> => {
-	let url = `${API_BASE_URL}/api/items`;
+export const fetchItemsApi = async (page: number = 1): Promise<ItemsResponseApi> => {
+	let url = `${API_BASE_URL}/api/items?page=${page}`;
 	const response = await axios.get<ItemsResponseApi>(url, {
 		withCredentials: true,
 		withXSRFToken: true,

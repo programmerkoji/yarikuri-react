@@ -4,11 +4,22 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { deleteItemApi } from "@/api/itemApi";
 import { Loading } from "@/components/atoms/Loading";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export const Item: React.FC = () => {
 	const location = useLocation();
-	const { items, fetchItems, loading } = useItems();
+	const { items, fetchItems, loading, currentPage, initialPage } = useItems();
+
 	const itemDatas = items?.items.data;
+	const { last_page = 0, custom_links = [] } = items?.items || {};
 
 	const handleDelete = async (
 		e: React.MouseEvent<HTMLButtonElement>,
@@ -20,7 +31,7 @@ export const Item: React.FC = () => {
 
 		try {
 			const response = await deleteItemApi(id);
-			await fetchItems();
+			await fetchItems(initialPage);
 			toast.info(response?.data.message);
 		} catch (error) {
 			console.error("削除エラー：", error);
@@ -33,7 +44,9 @@ export const Item: React.FC = () => {
 		}
 	}, [location, toast]);
 
-	return loading ? <Loading /> :
+	return loading ? (
+		<Loading />
+	) : (
 		<div className="py-12">
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -87,7 +100,10 @@ export const Item: React.FC = () => {
 											</td>
 											<td className="px-6 py-4">
 												<div className="flex items-center justify-center gap-2">
-													<Link to={ `edit/${id}` } className="inline-flex text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded">
+													<Link
+														to={`edit/${id}`}
+														className="inline-flex text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded"
+													>
 														編集
 													</Link>
 													<form>
@@ -105,10 +121,62 @@ export const Item: React.FC = () => {
 								</tbody>
 							</table>
 						</div>
-						<div className="mt-4"></div>
+						<div className="mt-4">
+							<Pagination>
+								<PaginationContent>
+									<PaginationItem>
+										<PaginationPrevious
+											href="#"
+											onClick={() =>
+												currentPage > 1 && fetchItems(currentPage - 1)
+											}
+											className={
+												currentPage === 1
+													? "opacity-50 pointer-events-none"
+													: ""
+											}
+										/>
+										</PaginationItem>
+										{currentPage - 3 >= 1 && (
+										<PaginationItem>
+											<PaginationEllipsis />
+										</PaginationItem>
+									)}
+									{custom_links.map((link, index) => (
+										<PaginationItem key={index}>
+											<PaginationLink
+												href="#"
+												onClick={() => fetchItems(Number(link.label))}
+												className={link.active ? "bg-gray-700 text-white" : ""}
+											>
+												{link.label}
+											</PaginationLink>
+										</PaginationItem>
+									))}
+									{currentPage + 3 <= last_page && (
+										<PaginationItem>
+											<PaginationEllipsis />
+										</PaginationItem>
+									)}
+									<PaginationItem>
+										<PaginationNext
+											href="#"
+											onClick={() =>
+												currentPage !== last_page && fetchItems(currentPage + 1)
+											}
+											className={
+												currentPage === last_page
+													? "opacity-50 pointer-events-none"
+													: ""
+											}
+										/>
+									</PaginationItem>
+								</PaginationContent>
+							</Pagination>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	;
+	);
 };

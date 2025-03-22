@@ -10,11 +10,19 @@ export type ItemsResponseApi = {
 		current_page: number;
 		data: Item[];
 		path: string;
+		last_page: number;
 		per_page: number;
 		total: number;
-	}
+		custom_links: PaginationLinks[];
+	};
 };
 
 export type ItemResponseApi = {
 	item: Item;
+};
+
+export type PaginationLinks = {
+	url: string;
+	label: string;
+	active: boolean;
 };

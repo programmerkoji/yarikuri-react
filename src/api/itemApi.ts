@@ -1,10 +1,12 @@
 import axios from "axios";
 import { Item, ItemResponseApi, ItemsResponseApi } from "../types/item";
 
-const API_BASE_URL = "http://localhost";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const fetchItemsApi = async (page: number = 1): Promise<ItemsResponseApi> => {
-	let url = `${API_BASE_URL}/api/items?page=${page}`;
+export const fetchItemsApi = async (
+	page: number = 1
+): Promise<ItemsResponseApi> => {
+	let url = `${API_BASE_URL}/items?page=${page}`;
 	const response = await axios.get<ItemsResponseApi>(url, {
 		withCredentials: true,
 		withXSRFToken: true,
@@ -13,7 +15,7 @@ export const fetchItemsApi = async (page: number = 1): Promise<ItemsResponseApi>
 };
 
 export const fetchItemApi = async (id: number): Promise<Item> => {
-	let url = `${API_BASE_URL}/api/items/${id}`;
+	let url = `${API_BASE_URL}/items/${id}`;
 	const response = await axios.get<ItemResponseApi>(url, {
 		withCredentials: true,
 		withXSRFToken: true,
@@ -24,7 +26,7 @@ export const fetchItemApi = async (id: number): Promise<Item> => {
 export const storeItemApi = async (data: Item) => {
 	try {
 		const response = await axios.post<Item>(
-			`${API_BASE_URL}/api/items`,
+			`${API_BASE_URL}/items`,
 			{ ...data },
 			{ withCredentials: true, withXSRFToken: true }
 		);
@@ -35,10 +37,10 @@ export const storeItemApi = async (data: Item) => {
 				// バリデーションエラーの場合はエラーオブジェクトを throw
 				throw error.response.data.errors;
 			}
-			throw new Error(error.response?.data?.message || 'APIエラー')
+			throw new Error(error.response?.data?.message || "APIエラー");
 		} else if (error instanceof Error) {
 			console.error("General error:", error.message);
-			throw new Error(error.message)
+			throw new Error(error.message);
 		} else {
 			console.error("Unexpected error:", error);
 			throw new Error("予期せぬエラーが起きました");
@@ -55,7 +57,7 @@ export const updateItemApi = async (
 	}
 	try {
 		const response = await axios.put<Item>(
-			`${API_BASE_URL}/api/items/${id}`,
+			`${API_BASE_URL}/items/${id}`,
 			{ ...data },
 			{ withCredentials: true, withXSRFToken: true }
 		);
@@ -66,10 +68,10 @@ export const updateItemApi = async (
 				// バリデーションエラーの場合はエラーオブジェクトを throw
 				throw error.response.data.errors;
 			}
-			throw new Error(error.response?.data?.message || 'APIエラー')
+			throw new Error(error.response?.data?.message || "APIエラー");
 		} else if (error instanceof Error) {
 			console.error("General error:", error.message);
-			throw new Error(error.message)
+			throw new Error(error.message);
 		} else {
 			console.error("Unexpected error:", error);
 			throw new Error("予期せぬエラーが起きました");
@@ -79,7 +81,7 @@ export const updateItemApi = async (
 
 export const deleteItemApi = async (id: number | null) => {
 	try {
-		const response = await axios.delete(`${API_BASE_URL}/api/items/${id}`, {
+		const response = await axios.delete(`${API_BASE_URL}/items/${id}`, {
 			withCredentials: true,
 			withXSRFToken: true,
 		});

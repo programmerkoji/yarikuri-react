@@ -1,11 +1,11 @@
 import { Login } from "@/pages/Login";
-import { Month } from "@/pages/Month";
 import { Top } from "@/pages/Top";
 import { HeaderLayout } from "@/template/HeaderLayout";
 import { FC, memo } from "react";
 import { Outlet, Route, Routes } from "react-router";
 import { ItemRouter } from "./ItemRouter";
 import { ProtectedRouter } from "./ProtectedRouter";
+import { MonthRouter } from "./MonthRouter";
 
 export const Router: FC = memo(() => {
 	return (
@@ -22,7 +22,7 @@ export const Router: FC = memo(() => {
 			>
 				<Route path="/top" element={<Top />} />
 				<Route path="/item">{ItemRouter}</Route>
-				<Route path="/month" element={<Month />} />
+				<Route path="/month">{MonthRouter}</Route>
 			</Route>
 		</Routes>
 	);

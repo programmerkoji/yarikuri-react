@@ -37,7 +37,8 @@ export const MonthForm = ({
 
 	return (
 		<form onSubmit={handleSubmit} className="lg:w-3/4 mx-auto devide devide-y">
-			{generalError && <p className="text-red-500">{generalError}</p>}
+			{generalError && <p className="block text-rose-700 mt-2">{generalError}</p>}
+			{errors.unique_error && <p className="block text-rose-700 mt-2">{errors.unique_error}</p>}
 			<div className="w-full">
 				<label className="leading-7 text-sm text-gray-600">年（西暦）</label>
 				<input

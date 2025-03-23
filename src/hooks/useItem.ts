@@ -22,5 +22,5 @@ export const useItem = () => {
 		fetchItem();
 	}, [id]);
 
-	return { item, fetchItem, loading };
+	return { item, loading };
 };

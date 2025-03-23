@@ -4,15 +4,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { deleteItemApi } from "@/api/itemApi";
 import { Loading } from "@/components/atoms/Loading";
-import {
-	Pagination,
-	PaginationContent,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
-} from "@/components/ui/pagination";
+import { PaginationComponent } from "@/components/molecules/PaginationComponent";
 
 export const Item: React.FC = () => {
 	const location = useLocation();
@@ -121,59 +113,12 @@ export const Item: React.FC = () => {
 								</tbody>
 							</table>
 						</div>
-						<div className="mt-4">
-							<Pagination>
-								<PaginationContent>
-									<PaginationItem>
-										<PaginationPrevious
-											href="#"
-											onClick={() =>
-												currentPage > 1 && fetchItems(currentPage - 1)
-											}
-											className={
-												currentPage === 1
-													? "opacity-50 pointer-events-none"
-													: ""
-											}
-										/>
-										</PaginationItem>
-										{currentPage - 3 >= 1 && (
-										<PaginationItem>
-											<PaginationEllipsis />
-										</PaginationItem>
-									)}
-									{custom_links.map((link, index) => (
-										<PaginationItem key={index}>
-											<PaginationLink
-												href="#"
-												onClick={() => fetchItems(Number(link.label))}
-												className={link.active ? "bg-gray-700 text-white" : ""}
-											>
-												{link.label}
-											</PaginationLink>
-										</PaginationItem>
-									))}
-									{currentPage + 3 <= last_page && (
-										<PaginationItem>
-											<PaginationEllipsis />
-										</PaginationItem>
-									)}
-									<PaginationItem>
-										<PaginationNext
-											href="#"
-											onClick={() =>
-												currentPage !== last_page && fetchItems(currentPage + 1)
-											}
-											className={
-												currentPage === last_page
-													? "opacity-50 pointer-events-none"
-													: ""
-											}
-										/>
-									</PaginationItem>
-								</PaginationContent>
-							</Pagination>
-						</div>
+						<PaginationComponent
+							currentPage={currentPage}
+							custom_links={custom_links}
+							last_page={last_page}
+							onPageChange={fetchItems}
+						/>
 					</div>
 				</div>
 			</div>

@@ -1,12 +1,15 @@
 import { deleteMonthApi } from "@/api/monthApi";
 import { Loading } from "@/components/atoms/Loading";
+import { PaginationComponent } from "@/components/molecules/PaginationComponent";
 import { useMonths } from "@/hooks/useMonths";
 import { Link } from "react-router";
 import { toast } from "sonner";
 
 export const Month: React.FC = () => {
-	const { months, loading, initialPage, fetchMonths } = useMonths();
+	const { months, loading, currentPage, initialPage, fetchMonths } =
+		useMonths();
 	const monthDatas = months?.months.data;
+	const { last_page = 0, custom_links = [] } = months?.months || {};
 
 	const handleDelete = async (
 		e: React.MouseEvent<HTMLButtonElement>,
@@ -49,10 +52,7 @@ export const Month: React.FC = () => {
 										<th scope="col" className="px-6 py-4 text-center">
 											年
 										</th>
-										<th
-											scope="col"
-											className="px-6 py-4 text-center"
-										>
+										<th scope="col" className="px-6 py-4 text-center">
 											月
 										</th>
 										<th scope="col" className="px-6 py-4 text-center">
@@ -104,6 +104,12 @@ export const Month: React.FC = () => {
 								</tbody>
 							</table>
 						</div>
+						<PaginationComponent
+							currentPage={currentPage}
+							custom_links={custom_links}
+							last_page={last_page}
+							onPageChange={fetchMonths}
+						/>
 					</div>
 				</div>
 			</div>

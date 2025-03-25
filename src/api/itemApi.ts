@@ -6,7 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const fetchItemsApi = async (
 	page: number = 1
 ): Promise<ItemsResponseApi> => {
-	let url = `${API_BASE_URL}/items?page=${page}`;
+	let url = `${API_BASE_URL}/item?page=${page}`;
 	const response = await axios.get<ItemsResponseApi>(url, {
 		withCredentials: true,
 		withXSRFToken: true,
@@ -15,7 +15,7 @@ export const fetchItemsApi = async (
 };
 
 export const fetchItemApi = async (id: number): Promise<Item> => {
-	let url = `${API_BASE_URL}/items/${id}`;
+	let url = `${API_BASE_URL}/item/${id}`;
 	const response = await axios.get<ItemResponseApi>(url, {
 		withCredentials: true,
 		withXSRFToken: true,
@@ -26,7 +26,7 @@ export const fetchItemApi = async (id: number): Promise<Item> => {
 export const storeItemApi = async (data: Item) => {
 	try {
 		const response = await axios.post<Item>(
-			`${API_BASE_URL}/items`,
+			`${API_BASE_URL}/item`,
 			{ ...data },
 			{ withCredentials: true, withXSRFToken: true }
 		);
@@ -57,7 +57,7 @@ export const updateItemApi = async (
 	}
 	try {
 		const response = await axios.put<Item>(
-			`${API_BASE_URL}/items/${id}`,
+			`${API_BASE_URL}/item/${id}`,
 			{ ...data },
 			{ withCredentials: true, withXSRFToken: true }
 		);
@@ -81,7 +81,7 @@ export const updateItemApi = async (
 
 export const deleteItemApi = async (id: number | null) => {
 	try {
-		const response = await axios.delete(`${API_BASE_URL}/items/${id}`, {
+		const response = await axios.delete(`${API_BASE_URL}/item/${id}`, {
 			withCredentials: true,
 			withXSRFToken: true,
 		});

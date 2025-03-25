@@ -6,7 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const fetchMonthsApi = async (
 	page: number = 1
 ): Promise<MonthsResponseApi> => {
-	let url = `${API_BASE_URL}/months?page=${page}`;
+	let url = `${API_BASE_URL}/month?page=${page}`;
 	const response = await axios.get<MonthsResponseApi>(url, {
 		withCredentials: true,
 		withXSRFToken: true,
@@ -16,7 +16,7 @@ export const fetchMonthsApi = async (
 
 export const fetchMonthApi = async (id: number): Promise<Month> => {
 	const response = await axios.get<MonthResponseApi>(
-		`${API_BASE_URL}/months/${id}`,
+		`${API_BASE_URL}/month/${id}`,
 		{
 			withCredentials: true,
 			withXSRFToken: true,
@@ -28,7 +28,7 @@ export const fetchMonthApi = async (id: number): Promise<Month> => {
 export const storeMonthApi = async (data: Month) => {
 	try {
 		const response = await axios.post<Month>(
-			`${API_BASE_URL}/months`,
+			`${API_BASE_URL}/month`,
 			{ ...data },
 			{ withCredentials: true, withXSRFToken: true }
 		);
@@ -55,7 +55,7 @@ export const storeMonthApi = async (data: Month) => {
 export const updateMonthApi = async (id: number, data: Month) => {
 	try {
 		const response = await axios.put<Month>(
-			`${API_BASE_URL}/months/${id}`,
+			`${API_BASE_URL}/month/${id}`,
 			{ ...data },
 			{ withCredentials: true, withXSRFToken: true }
 		);
@@ -81,7 +81,7 @@ export const updateMonthApi = async (id: number, data: Month) => {
 
 export const deleteMonthApi = async (id: number | null) => {
 	try {
-		const response = await axios.delete(`${API_BASE_URL}/months/${id}`, {
+		const response = await axios.delete(`${API_BASE_URL}/month/${id}`, {
 			withCredentials: true,
 			withXSRFToken: true,
 		});

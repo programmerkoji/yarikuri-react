@@ -1,4 +1,4 @@
-import { Month } from "@/pages/Month";
+import { Month } from "@/pages/months/Month";
 import { Create } from "@/pages/months/Create";
 import { Update } from "@/pages/months/Update";
 import { Route } from "react-router";

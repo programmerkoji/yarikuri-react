@@ -1,13 +1,13 @@
-export type Month = {
+export type Top = {
 	id: number | null;
 	year: string;
 	month: string;
 };
 
-export type MonthsResponseApi = {
+export type TopResponseApi = {
 	months: {
 		current_page: number;
-		data: Month [];
+		data: Top[];
 		path: string;
 		last_page: number;
 		per_page: number;
@@ -17,7 +17,7 @@ export type MonthsResponseApi = {
 };
 
 export type MonthResponseApi = {
-	month: Month;
+	month: Top;
 };
 
 export type PaginationLinks = {

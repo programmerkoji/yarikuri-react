@@ -1,4 +1,3 @@
-import { Item } from "./item";
 import { Month } from "./month";
 
 export type TopMonthResponseApi = {

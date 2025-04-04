@@ -4,7 +4,7 @@ import { useTopMonths } from "@/hooks/useTopMonths";
 import { Link } from "react-router";
 
 export const Top = () => {
-	const { topMonths, loading, currentPage, initialPage, fetchTopMonths } =
+	const { topMonths, loading, currentPage, fetchTopMonths } =
 		useTopMonths();
 	const monthDatas = topMonths?.months.data;
 	const { last_page = 0, custom_links = [] } = topMonths?.months || {};

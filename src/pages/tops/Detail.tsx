@@ -1,6 +1,5 @@
 import { Loading } from "@/components/atoms/Loading";
 import { useTopItems } from "@/hooks/useTopItems";
-import { useState } from "react";
 
 export const Detail = () => {
 	const { topItems, loading, toggleCheck } = useTopItems();

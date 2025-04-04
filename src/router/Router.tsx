@@ -1,5 +1,4 @@
 import { Login } from "@/pages/Login";
-import { Top } from "@/pages/tops/Top";
 import { HeaderLayout } from "@/template/HeaderLayout";
 import { FC, memo } from "react";
 import { Outlet, Route, Routes } from "react-router";

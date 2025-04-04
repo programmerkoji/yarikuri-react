@@ -17,7 +17,7 @@ export const Top = () => {
 				<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg flex-wrap">
 					<div className="p-4 text-gray-900 grid grid-cols-2 lg:grid-cols-4 gap-4">
 						{monthDatas?.map(({ id, year, month }) => (
-							<div className="max-w-sm rounded border border-gray-300">
+							<div className="max-w-sm rounded border border-gray-300" key={id}>
 								<Link
 									to={`detail/${id}`}
 									className="text-gray-700 text-sm block px-6 py-4"

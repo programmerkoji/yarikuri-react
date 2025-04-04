@@ -1,13 +1,10 @@
-export type Top = {
-	id: number | null;
-	year: string;
-	month: string;
-};
+import { Item } from "./item";
+import { Month } from "./month";
 
-export type TopResponseApi = {
+export type TopMonthResponseApi = {
 	months: {
 		current_page: number;
-		data: Top[];
+		data: Month[];
 		path: string;
 		last_page: number;
 		per_page: number;
@@ -16,8 +13,16 @@ export type TopResponseApi = {
 	};
 };
 
-export type MonthResponseApi = {
-	month: Top;
+export type TopItem = {
+	id: number | null;
+	name: string;
+	price: string;
+	is_checked: number | null;
+};
+
+export type TopItemResponseApi = {
+	calculateTotalAmounts: number;
+	items: TopItem[];
 };
 
 export type PaginationLinks = {

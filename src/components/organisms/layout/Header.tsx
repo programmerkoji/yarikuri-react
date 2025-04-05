@@ -2,18 +2,33 @@ import { logoutApi } from "@/api/authApi";
 import { NAV_LINKS } from "@/constants/navLinks";
 import { useAuth } from "@/hooks/useAuth";
 import { getNavLinkClass, getSpNavLinkClass } from "@/utils/classUtils";
-import { FC, memo, useState } from "react";
+import { FC, memo, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 export const Header: FC = memo(() => {
 	const [isOpen, setIsOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 	const { user } = useAuth();
 	const location = useLocation();
 	const navigate = useNavigate();
 
+	const menuRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+				setIsUserMenuOpen(false);
+			}
+		}
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
 	const handleLogout = async () => {
-    await logoutApi();
+		await logoutApi();
 		navigate("login");
 	};
 
@@ -75,13 +90,13 @@ export const Header: FC = memo(() => {
 						</button>
 					</div>
 					<div className="hidden sm:flex sm:items-center sm:ml-6">
-						<div className="relative">
+						<div className="relative" ref={menuRef}>
 							<div>
 								<button
 									className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
 									onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
 								>
-									<div>{ user?.name }</div>
+									<div>{user?.name}</div>
 									<div className="ml-1">
 										<svg
 											className="fill-current h-4 w-4"
@@ -138,22 +153,14 @@ export const Header: FC = memo(() => {
 					</div>
 
 					<div className="mt-3 space-y-1">
-						<form
-							method="POST"
-							action="https://from-forties.net/yarikuri/logout"
-						>
-							<input
-								type="hidden"
-								name="_token"
-								value="cGgDxa4dPTpIkOBTkgIlrg1i5r2j1zrHnXzeTKtW"
-							/>
+						<div>
 							<div
 								className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out"
 								onClick={handleLogout}
 							>
 								ログアウト
 							</div>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>

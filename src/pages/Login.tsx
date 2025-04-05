@@ -18,7 +18,6 @@ export const Login = () => {
 			setUser({ id, name, email });
 			navigate("/top");
 		} catch (error: any) {
-			console.log(error.response);
 			if (error.response) {
 				if (error.response.status === 403) {
 					toast(error.response.data.message);

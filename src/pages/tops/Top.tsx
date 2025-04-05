@@ -20,7 +20,7 @@ export const Top = () => {
 							<div className="max-w-sm rounded border border-gray-300" key={id}>
 								<Link
 									to={`detail/${id}`}
-									className="text-gray-700 text-sm block px-6 py-4"
+									className="text-gray-700 text-sm block px-6 py-4 cursor-pointer"
 								>
 									{year}年{month}月
 								</Link>

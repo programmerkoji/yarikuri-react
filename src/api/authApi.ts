@@ -6,7 +6,9 @@ axios.defaults.withXSRFToken = true;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getCsrfToken = async () => {
-	await axios.get(`${API_BASE_URL}/sanctum/csrf-cookie`);
+	await axios.get(`${API_BASE_URL}/sanctum/csrf-cookie`, {
+		withCredentials: true,
+	});
 };
 
 export const loginApi = async (email: string, password: string) => {
@@ -34,7 +36,7 @@ export const fetchUser = async (): Promise<UserType | null> => {
 		});
 		return response.data;
 	} catch (error) {
-		console.error('ユーザー取得エラー：', error)
+		console.error("ユーザー取得エラー：", error);
 		return null;
 	}
 };

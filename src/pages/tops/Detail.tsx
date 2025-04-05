@@ -4,6 +4,7 @@ import { useTopItems } from "@/hooks/useTopItems";
 export const Detail = () => {
 	const { topItems, loading, toggleCheck } = useTopItems();
 	const itemData = topItems?.items;
+	const calculateTotalAmounts = topItems?.calculateTotalAmounts;
 
 	return loading ? (
 		<Loading />
@@ -11,7 +12,10 @@ export const Detail = () => {
 		<div className="py-12">
 			<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg flex-wrap">
-					<div className="p-4 text-gray-900 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+						<div className="p-4 pb-0 text-gray-900 flex items-center justify-end">
+							<div className="font-bold text-lg text-gray-700"><span>合計: </span>{Number(calculateTotalAmounts).toLocaleString()}円</div>
+						</div>
+						<div className="p-4 text-gray-900 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 						{itemData?.map(({ id, name, price, is_checked }) => (
 							<div
 								className="max-w-sm rounded border border-gray-300 text-right"
@@ -27,7 +31,7 @@ export const Detail = () => {
 											onChange={() => toggleCheck(Number(id))}
 										/>
 									</div>
-									<label htmlFor={`check-${id}`} className="flex-1">
+									<label htmlFor={`check-${id}`} className="flex-1 cursor-pointer">
 										<p className="pb-2 font-bold">{name}</p>
 										<p>{Number(price).toLocaleString()}円</p>
 									</label>

@@ -119,7 +119,7 @@ export const Header: FC = memo(() => {
 							>
 								<div className="rounded-md ring-black ring-opacity-5 py-1 bg-white">
 									<div
-										className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+										className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out cursor-pointer"
 										onClick={handleLogout}
 									>
 										ログアウト

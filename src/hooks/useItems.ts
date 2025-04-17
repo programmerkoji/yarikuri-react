@@ -3,7 +3,7 @@ import { ItemsResponseApi } from "../types/item";
 import { fetchItemsApi } from "../api/itemApi";
 
 export const useItems = () => {
-	const initialPage = Number(sessionStorage.getItem("currentPage")) || 1;
+	const initialPage = Number(sessionStorage.getItem("currentPageOfItem")) || 1;
 	const [items, setItems] = useState<ItemsResponseApi>();
 	const [loading, setLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState<number>(initialPage);
@@ -14,7 +14,7 @@ export const useItems = () => {
 			const data = await fetchItemsApi(page);
 			setItems(data);
 			setCurrentPage(page);
-			sessionStorage.setItem("currentPage", String(page));
+			sessionStorage.setItem("currentPageOfItem", String(page));
 		} finally {
 			setLoading(false);
 		}

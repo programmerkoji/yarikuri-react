@@ -3,7 +3,7 @@ import { MonthsResponseApi } from "@/types/month";
 import { useEffect, useState } from "react";
 
 export const useMonths = () => {
-	const initialPage = Number(sessionStorage.getItem("currentPage")) || 1;
+	const initialPage = Number(sessionStorage.getItem("currentPageOfMonth")) || 1;
 	const [months, setMonths] = useState<MonthsResponseApi>();
 	const [loading, setLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(initialPage);
@@ -14,7 +14,7 @@ export const useMonths = () => {
 			const data = await fetchMonthsApi(page);
 			setMonths(data);
 			setCurrentPage(page);
-			sessionStorage.setItem("currentPage", String(page));
+			sessionStorage.setItem("currentPageOfMonth", String(page));
 		} finally {
 			setLoading(false);
 		}

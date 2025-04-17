@@ -1,6 +1,6 @@
 import { fetchTopItemsApi, updateItemCheckedApi } from "@/api/TopApi";
 import { TopItemResponseApi } from "@/types/top";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 
 export const useTopItems = () => {
@@ -52,10 +52,6 @@ export const useTopItems = () => {
 			await updateItemCheckedApi(data);
 		} catch (error) {}
 	};
-
-	useEffect(() => {
-		fetchTopItems();
-	}, []);
 
 	return { topItems, loading, fetchTopItems, toggleCheck };
 };

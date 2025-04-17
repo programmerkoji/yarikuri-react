@@ -14,14 +14,31 @@ export const getCsrfToken = async () => {
 export const loginApi = async (email: string, password: string) => {
 	await getCsrfToken();
 	try {
-		const response = await axios.post(`${API_BASE_URL}/api/login`, {
-			email,
-			password,
-		});
+		const response = await axios.post(
+			`${API_BASE_URL}/api/login`,
+			{
+				email,
+				password,
+			},
+			{ withCredentials: true, withXSRFToken: true }
+		);
 		return response.data;
-	} catch (error: any) {
-		console.log(error);
-		throw error;
+	} catch (error: unknown) {
+		if (axios.isAxiosError(error)) {
+			if (error.response?.status === 422) {
+				throw error.response.data.errors;
+			}
+			if (error.response?.status === 401) {
+				throw error.response.data.message;
+			}
+			throw new Error(error.response?.data?.message || "APIエラー");
+		} else if (error instanceof Error) {
+			console.error("General error:", error.message);
+			throw new Error(error.message);
+		} else {
+			console.error("Unexpected error:", error);
+			throw new Error("予期せぬエラーが起きました");
+		}
 	}
 };
 

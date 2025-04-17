@@ -5,8 +5,11 @@ import { useAuth } from "../hooks/useAuth";
 import { toast } from "sonner";
 
 export const Login = () => {
-	const [mail, setEmail] = useState("test@test.com");
-	const [password, setPassword] = useState("password1234");
+	const [mail, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [errors, setErrors] = useState<Record<string, string[]>>({});
+	const [authErrors, setAuthErrors] = useState("");
+	const [generalError, setGeneralError] = useState<string | null>(null);
 	const { login: setUser } = useAuth();
 	const navigate = useNavigate();
 
@@ -18,6 +21,13 @@ export const Login = () => {
 			setUser({ id, name, email });
 			navigate("/top");
 		} catch (error: any) {
+			if (typeof error === "object" && error !== null) {
+				setErrors(error as Record<string, string[]>);
+			} else if (typeof error === "string" && error !== null) {
+				setAuthErrors(error);
+			} else if (error instanceof Error) {
+				setGeneralError(error.message);
+			}
 			if (error.response) {
 				if (error.response.status === 403) {
 					toast(error.response.data.message);
@@ -46,6 +56,12 @@ export const Login = () => {
 					</div>
 
 					<form onSubmit={handleLogin}>
+						{generalError && (
+							<p className="block text-rose-700 mt-2">{generalError}</p>
+						)}
+						{authErrors && (
+							<p className="block text-rose-700 mt-4 mb-4">{authErrors}</p>
+						)}
 						<div>
 							<label className="block font-medium text-sm text-gray-700">
 								メールアドレス
@@ -58,6 +74,12 @@ export const Login = () => {
 								value={mail}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
+							{errors.email &&
+								errors.email.map((msg, index) => (
+									<span key={index} className="block text-rose-700 mt-2">
+										{msg}
+									</span>
+								))}
 						</div>
 						<div className="mt-4">
 							<label className="block font-medium text-sm text-gray-700">
@@ -71,6 +93,12 @@ export const Login = () => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
+							{errors.password &&
+								errors.password.map((msg, index) => (
+									<span key={index} className="block text-rose-700 mt-2">
+										{msg}
+									</span>
+								))}
 						</div>
 						<div className="flex items-center justify-end mt-6">
 							<button

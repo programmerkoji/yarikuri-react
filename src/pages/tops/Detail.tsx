@@ -1,10 +1,16 @@
 import { Loading } from "@/components/atoms/Loading";
 import { useTopItems } from "@/hooks/useTopItems";
+import { useEffect } from "react";
 
 export const Detail = () => {
-	const { topItems, loading, toggleCheck } = useTopItems();
+	const { topItems, loading, toggleCheck, fetchTopItems } = useTopItems();
 	const itemData = topItems?.items;
 	const calculateTotalAmounts = topItems?.calculateTotalAmounts;
+
+	useEffect(() => {
+		fetchTopItems();
+	}, []);
+
 
 	return loading ? (
 		<Loading />

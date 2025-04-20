@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { loginApi } from "../api/authApi";
-import { useNavigate } from "react-router";
+import { Navigate, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "sonner";
 
@@ -10,8 +10,14 @@ export const Login = () => {
 	const [errors, setErrors] = useState<Record<string, string[]>>({});
 	const [authErrors, setAuthErrors] = useState("");
 	const [generalError, setGeneralError] = useState<string | null>(null);
-	const { login: setUser } = useAuth();
+	const { login: setUser, user } = useAuth();
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	if (user) {
+		const from = location.state?.from?.pathname || "/top"
+		return <Navigate to={from} replace />
+	}
 
 	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

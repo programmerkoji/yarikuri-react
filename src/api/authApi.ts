@@ -53,7 +53,7 @@ export const fetchUser = async (): Promise<UserType | null> => {
 		});
 		return response.data;
 	} catch (error) {
-		console.error("ユーザー取得エラー：", error);
+		// console.error("ユーザー取得エラー：", error);
 		return null;
 	}
 };

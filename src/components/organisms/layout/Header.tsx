@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 export const Header: FC = memo(() => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-	const { user } = useAuth();
+	const { logout: setUser, user } = useAuth();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -29,6 +29,7 @@ export const Header: FC = memo(() => {
 
 	const handleLogout = async () => {
 		await logoutApi();
+		setUser();
 		navigate("login");
 	};
 

@@ -60,9 +60,6 @@ export const Item: React.FC = () => {
 								<thead className="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 									<tr>
 										<th scope="col" className="px-6 py-4">
-											No
-										</th>
-										<th scope="col" className="px-6 py-4">
 											項目名
 										</th>
 										<th scope="col" className="px-6 py-4 text-center">
@@ -79,9 +76,6 @@ export const Item: React.FC = () => {
 											className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
 											key={id}
 										>
-											<td className="px-6 py-4">
-												<div className="flex items-center">{id}</div>
-											</td>
 											<td className="px-6 py-4">
 												<div className="flex items-center">{name}</div>
 											</td>
